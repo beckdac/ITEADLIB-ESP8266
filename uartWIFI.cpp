@@ -1,19 +1,5 @@
 #include "uartWIFI.h"
 
-#ifdef UNO
-SoftwareSerial mySerial(_DBG_RXPIN_,_DBG_TXPIN_);
-#endif
-
-#ifdef DEBUG
-#define DBG(message)    DebugSerial.print(message)
-#define DBGLN(message)    DebugSerial.println(message)
-#define DBGW(message)    DebugSerial.write(message)
-#else
-#define DBG(message)
-#define DBGLN(message)
-#define DBGW(message)
-#endif // DEBUG
-
 int8_t chlID;		//client id(0-4)
 bool wifiPresent;   //track is wifi card is present
 
@@ -22,20 +8,16 @@ bool WIFI::begin(void)
 	boolean result = false;
 	_cell.begin(115200);	//The default baud rate of ESP8266 is 115200
 	
-	DebugSerial.begin(debugBaudRate);
-
 	_cell.flush();
 	_cell.setTimeout(3000);
 	println("AT+RST");
 	result = _cell.find("ready");
 	if(result)
 	{
-		DBGLN("Module is ready");
 		wifiPresent = true;
 	}
     else
 	{
-		DBGLN("Module have no response");
 		wifiPresent = false;
 	}
 	return wifiPresent;
@@ -219,7 +201,6 @@ int WIFI::ReceiveMessage(char *buf)
 				
 			}
 			int iSize;
-			DBGLN(data);
 			
 			if(found ==true)
 			{
@@ -227,20 +208,16 @@ int WIFI::ReceiveMessage(char *buf)
 			chlID = _id.toInt();
 			String _size = data.substring(j+1, i);
 			iSize = _size.toInt();
-			//DBG(_size);
 			String str = data.substring(i+1, i+1+iSize);
 			strcpy(buf, str.c_str());	
-			//DBG(str);
 						
 			}
 			else
 			{			
 			String _size = data.substring(4, i);
 			iSize = _size.toInt();
-			//DBGLN(iSize);
 			String str = data.substring(i+1, i+1+iSize);
 			strcpy(buf, str.c_str());
-			//DBG(str);
 			}
 			return iSize;
 		}
@@ -268,7 +245,6 @@ void WIFI::Reset(void)
     while (millis()-start<5000) {                            
         if(_cell.find("ready")==true)
         {
-			DBGLN("reboot wifi is OK");
            break;
         }
     }
@@ -366,7 +342,6 @@ bool WIFI::confMode(byte a)
 			  char a =_cell.read();
 			  data=data+a;
 		  }
-		  DBGLN(data);
 		  return false;
 	  }
 	  
@@ -1037,7 +1012,6 @@ String WIFI::showIP(void)
 	}
 	data = "";
   }
-	//DBGLN(data);
     char head[4] = {0x0D,0x0A};   
     char tail[7] = {0x0D,0x0D,0x0A};        
     data.replace("AT+CIFSR","");
@@ -1140,12 +1114,10 @@ boolean WIFI::setTimeout(int timeout)
 ***************************************************************************/
 void WIFI::print(const String &s)
 {
-	DBG(s);
 	_cell.print(s);
 }
 
 void WIFI::println(const String &s)
 {
-	DBGLN(s);
 	_cell.println(s);
 }

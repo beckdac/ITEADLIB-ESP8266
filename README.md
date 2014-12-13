@@ -1,3 +1,6 @@
+
+THIS FILE IS PROBABLY NOT CURRENT WITH THIS FORK!
+
 # ESP8266 library #
 
 When you use with UNO board, uncomment the follow line in uartWIFI.h.

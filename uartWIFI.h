@@ -13,43 +13,13 @@ V1.0	released the first version of ESP8266 library
 */
 
 
-#define DEBUG //uncomment to enable debugging
-//#define UNO			//uncomment this line when you use it with UNO board or Mini
-//#define MEGA		//uncomment this line when you use it with MEGA board
-#define LEO		//uncomment this line when you use it with Leonardo or Micro board
-
 #ifndef __UARTWIFI_H__
 #define __UARTWIFI_H__
 #include <Arduino.h>
-//#include "NilRTOS.h"
 
-//Set UNO for ESP on D0/D1 UART and debug on FTDI and slower rate
-#ifdef UNO
-#include <SoftwareSerial.h>
-#define _DBG_RXPIN_ 2
-#define _DBG_TXPIN_ 3
 #define _cell	Serial
-#define DebugSerial	mySerial
-#define debugBaudRate 9600
-extern SoftwareSerial mySerial;
-#endif  
 
-//set MEGA for ESP on D18/D19 UART and debug on D0/D1 UART
-#ifdef MEGA
-#define _cell	Serial1
-#define DebugSerial	Serial
-#define debugBaudRate 115200
-#endif  
-
-//set LEO for ESP on D0/D1 UART and debug on native USB serial		
-#ifdef LEO
-#define _cell	Serial1
-#define DebugSerial	Serial
-#define debugBaudRate 115200
-#endif
-
-
-//The way of encrypstion
+//The way of encryption
 #define    OPEN          0
 #define    WEP           1
 #define    WAP_PSK       2
@@ -72,7 +42,6 @@ extern SoftwareSerial mySerial;
 
 #define SERIAL_TX_BUFFER_SIZE 128
 #define SERIAL_RX_BUFFER_SIZE 128
-
 
 class WIFI
 {
